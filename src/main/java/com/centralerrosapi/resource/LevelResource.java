@@ -2,6 +2,9 @@ package com.centralerrosapi.resource;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +33,7 @@ public class LevelResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Level> criar(@RequestBody Level level) {
+	public ResponseEntity<Level> criar(@Valid @RequestBody Level level) {
 		Level novoLevel = levelRepository.save(level);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
@@ -40,8 +43,9 @@ public class LevelResource {
 	}
 	
 	@GetMapping("/{id}")
-	public Level buscar(@PathVariable Long id) {
-		return levelRepository.findById(id).get();
+	public ResponseEntity<?> buscar(@PathVariable Long id) {
+		Optional<Level> level = levelRepository.findById(id);
+		return (level.isPresent()) ? ResponseEntity.ok(level) : ResponseEntity.notFound().build(); 
 	}
 
 }
