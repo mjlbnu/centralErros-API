@@ -32,6 +32,21 @@ public class LevelResource {
 		return levelRepository.findAll();
 	}
 	
+	/*
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public Map<String, String> handlevalidationExceptions(MethodArgumentNotValidException ex) {
+		Map<String, String> errors = new HashMap<>();
+		ex.getBindingResult().getAllErrors().forEach((error) -> {
+			String fieldname = ((FieldError) error).getField();
+			String errorMessage = error.getDefaultMessage();
+			errors.put("msgUser", errorMessage);
+			errors.put("msgDev", error.toString());
+		});
+		return errors;
+	}
+	*/
+	
 	@PostMapping
 	public ResponseEntity<Level> criar(@Valid @RequestBody Level level) {
 		Level novoLevel = levelRepository.save(level);

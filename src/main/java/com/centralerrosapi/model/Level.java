@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -16,8 +17,9 @@ public class Level {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull
-	@Size (min = 3, max = 30)
+	@NotNull(message = "Nome não pode ser nulo")
+	@Size (min = 3, max = 30, message = "Nome deve ter de {min} a {max} caracteres")
+	@NotBlank(message = "Nome é obrigatório")
 	private String name;
 	
 	public Long getId() {
@@ -60,6 +62,4 @@ public class Level {
 			return false;
 		return true;
 	}
-	
-	
 }
