@@ -1,39 +1,39 @@
 package com.centralerrosapi.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "level")
-public class Level {
-	
+@Table(name = "system")
+public class System {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotNull(message = "Nome não pode ser nulo")
-	@Size (min = 3, max = 30, message = "Nome deve ter de {min} a {max} caracteres")
-	@NotBlank(message = "Nome é obrigatório")
+
+	@Column
+	@NotNull
+	@Size(max = 80)
 	private String name;
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -54,7 +54,7 @@ public class Level {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Level other = (Level) obj;
+		System other = (System) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -62,4 +62,5 @@ public class Level {
 			return false;
 		return true;
 	}
+
 }
