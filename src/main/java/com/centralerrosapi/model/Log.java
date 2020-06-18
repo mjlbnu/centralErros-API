@@ -1,4 +1,4 @@
 package com.centralerrosapi.model;
 
-public enum Level {
+public class Log {
 }
