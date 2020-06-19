@@ -53,6 +53,7 @@ public class Log {
 	@Enumerated(value = EnumType.STRING)
 	private Level level;
 
+	@NotNull(message = "System cannot be null")
 	@ManyToOne
 	@JoinColumn(name = "system_id")
 	private System system;

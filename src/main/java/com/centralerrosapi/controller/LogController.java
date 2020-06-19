@@ -1,4 +1,4 @@
-package com.centralerrosapi.resource;
+package com.centralerrosapi.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,38 +18,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.centralerrosapi.event.EventResourseCreated;
-import com.centralerrosapi.model.System;
-import com.centralerrosapi.repository.SystemRepository;
+import com.centralerrosapi.model.Log;
+import com.centralerrosapi.repository.LogRepository;
+import com.centralerrosapi.repository.filter.LogFilter;
 
 @RestController
-@RequestMapping("/systems")
-public class SystemResourse {
+@RequestMapping("/logs")
+public class LogController {
 	
 	@Autowired
-	private SystemRepository systemRepository;
+	private LogRepository logRepository;
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<System> listar(){
-		return systemRepository.findAll();
+	public List<Log> pesquisar(LogFilter logFilter){
+		return logRepository.filtrar(logFilter);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> buscar(@PathVariable Long id) {
-		Optional<System> system = systemRepository.findById(id);
-		return (system.isPresent()) ? ResponseEntity.ok(system) : ResponseEntity.notFound().build();
+		Optional<Log> log = logRepository.findById(id);
+		return (log.isPresent()) ? ResponseEntity.ok(log) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
-	public ResponseEntity<System> criar(@Valid @RequestBody System system, HttpServletResponse response) {
-		System novoSystem = systemRepository.save(system);
+	public ResponseEntity<Log> criar(@Valid @RequestBody Log log, HttpServletResponse response) {
+		Log novoLog = logRepository.save(log);
 		
-		publisher.publishEvent(new EventResourseCreated(this, response, novoSystem.getId()));
+		publisher.publishEvent(new EventResourseCreated(this, response, novoLog.getId()));
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(novoSystem);
+		return ResponseEntity.status(HttpStatus.CREATED).body(novoLog);
 	}
-	
-
 }

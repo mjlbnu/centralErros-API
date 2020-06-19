@@ -17,8 +17,20 @@ CREATE TABLE IF NOT EXISTS system(
 
 ALTER TABLE log ADD CONSTRAINT FKjo7173o065h9iwe4nnkyo89iv FOREIGN KEY (system_id) REFERENCES system(id);
 
-INSERT INTO system(name)
-VALUES('System X');
+INSERT INTO system(name) VALUES('System X');
+INSERT INTO system(name) VALUES('System X');
+INSERT INTO system(name) VALUES('System Y');
+INSERT INTO system(name) VALUES('System Z');
+INSERT INTO system(name) VALUES('System A');
+INSERT INTO system(name) VALUES('System B');
+INSERT INTO system(name) VALUES('System C');
+INSERT INTO system(name) VALUES('System D');
 
-INSERT INTO log(title, detail, category, level, system_id)
-VALUES('Título do erro', 'Detalhe do Erro', 'DEVELOPMENT', 'ERROR', 1);
+INSERT INTO log(title, detail, category, level, system_id) VALUES('Erro ao carregar', 'Erro ao carregar imagem', 'DEVELOPMENT', 'ERROR', 1);
+INSERT INTO log(title, detail, category, level, system_id) VALUES('Erro ao buscar', 'Erro ao buscar cliente', 'PRODUCTION', 'WARNING', 2);
+INSERT INTO log(title, detail, category, level, system_id) VALUES('Erro no upload', 'Erro no upload de arquivo', 'HOMOLOGATION', 'INFO', 1);
+INSERT INTO log(title, detail, category, level, system_id) VALUES('Download', 'Erro no download', 'TEST', 'DEBUG', 1);
+INSERT INTO log(title, detail, category, level, system_id) VALUES('Erro Gráfico', 'Erro ao gerar gráfico', 'DEVELOPMENT', 'ERROR', 4);
+INSERT INTO log(title, detail, category, level, system_id) VALUES('Erro no grid', 'Erro ao ordenar grid', 'PRODUCTION', 'INFO', 2);
+INSERT INTO log(title, detail, category, level, system_id) VALUES('Geração de remessa', 'rro ao gerar arquivo de remessa', 'HOMOLOGATION', 'WARNING', 3);
+INSERT INTO log(title, detail, category, level, system_id) VALUES('Animation error', 'Erro na animação', 'TEST', 'DEBUG', 3);

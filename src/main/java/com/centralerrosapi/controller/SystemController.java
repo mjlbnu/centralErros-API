@@ -1,4 +1,4 @@
-package com.centralerrosapi.resource;
+package com.centralerrosapi.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,36 +18,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.centralerrosapi.event.EventResourseCreated;
-import com.centralerrosapi.model.Log;
-import com.centralerrosapi.repository.LogRepository;
+import com.centralerrosapi.model.System;
+import com.centralerrosapi.repository.SystemRepository;
 
 @RestController
-@RequestMapping("/logs")
-public class LogResourse {
+@RequestMapping("/systems")
+public class SystemController {
 	
 	@Autowired
-	private LogRepository logRepository;
+	private SystemRepository systemRepository;
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<Log> listar(){
-		return logRepository.findAll();
+	public List<System> listar(){
+		return systemRepository.findAll();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> buscar(@PathVariable Long id) {
-		Optional<Log> log = logRepository.findById(id);
-		return (log.isPresent()) ? ResponseEntity.ok(log) : ResponseEntity.notFound().build();
+		Optional<System> system = systemRepository.findById(id);
+		return (system.isPresent()) ? ResponseEntity.ok(system) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
-	public ResponseEntity<Log> criar(@Valid @RequestBody Log log, HttpServletResponse response) {
-		Log novoLog = logRepository.save(log);
+	public ResponseEntity<System> criar(@Valid @RequestBody System system, HttpServletResponse response) {
+		System novoSystem = systemRepository.save(system);
 		
-		publisher.publishEvent(new EventResourseCreated(this, response, novoLog.getId()));
+		publisher.publishEvent(new EventResourseCreated(this, response, novoSystem.getId()));
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(novoLog);
+		return ResponseEntity.status(HttpStatus.CREATED).body(novoSystem);
 	}
+	
+
 }
