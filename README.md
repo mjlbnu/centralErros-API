@@ -31,8 +31,6 @@ Tecnologia
 * Spring Data Jpa
 * Spring Security
 * H2 database
-* MySQL
-* Postgres ElephantSQL
 * Flyway
 * Hibernate
 * JWT
