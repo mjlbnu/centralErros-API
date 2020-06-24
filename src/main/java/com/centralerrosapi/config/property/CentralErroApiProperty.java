@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("central")
 public class CentralErroApiProperty {
 	
-	private String allowedOrigin = "http://localhost:8000";
+	private String allowedOrigin = "http://localhost:8080";
 	
 	private final Security security = new Security();
 	
