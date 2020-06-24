@@ -21,6 +21,8 @@ import com.centralerrosapi.event.EventResourseCreated;
 import com.centralerrosapi.model.System;
 import com.centralerrosapi.repository.SystemRepository;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/systems")
 public class SystemController {
@@ -31,17 +33,20 @@ public class SystemController {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
+	@ApiOperation("Lista todos os sistemas")
 	@GetMapping
 	public List<System> listar(){
 		return systemRepository.findAll();
 	}
 	
+	@ApiOperation("Busca de Sistema por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> buscar(@PathVariable Long id) {
 		Optional<System> system = systemRepository.findById(id);
 		return (system.isPresent()) ? ResponseEntity.ok(system) : ResponseEntity.notFound().build();
 	}
 	
+	@ApiOperation("Cria um novo Sistema")
 	@PostMapping
 	public ResponseEntity<System> criar(@Valid @RequestBody System system, HttpServletResponse response) {
 		System novoSystem = systemRepository.save(system);

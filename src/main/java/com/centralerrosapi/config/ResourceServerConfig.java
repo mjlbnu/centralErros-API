@@ -31,10 +31,19 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 	protected AuthenticationManager authenticationManager() throws Exception {
 		return super.authenticationManager();
 	}
-	
+
 	@Override
 	public void configure(WebSecurity webSecurity) throws Exception {
-		webSecurity.ignoring().antMatchers("/systems");
+		webSecurity.ignoring().antMatchers(
+				"/h2/",
+				"/h2/**",
+				"/h2/h2-console/**",
+				"/v2/api-docs",
+				"/configuration/ui",
+                "/swagger-resources/**",
+                "/configuration/**",
+                "/swagger-ui.html",
+                "/webjars/**");
 	}
 	
 	@Override
@@ -45,7 +54,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/systems").permitAll()
+			.antMatchers("/swagger-ui.html").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

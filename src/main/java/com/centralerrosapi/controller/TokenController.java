@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/tokens")
 public class TokenController {
 
+	@ApiOperation("Logout da aplicação")
 	@DeleteMapping("/revoke")
 	public void revoke(HttpServletRequest request, HttpServletResponse response) {
 		Cookie cookie = new Cookie("refreshToken", null);
