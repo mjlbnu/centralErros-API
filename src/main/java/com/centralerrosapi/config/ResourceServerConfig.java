@@ -35,9 +35,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity webSecurity) throws Exception {
 		webSecurity.ignoring().antMatchers(
-				"/h2/",
-				"/h2/**",
-				"/h2/h2-console/**",
+				"/h2",
 				"/v2/api-docs",
 				"/configuration/ui",
                 "/swagger-resources/**",
