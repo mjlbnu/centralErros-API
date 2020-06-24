@@ -1,6 +1,5 @@
 package com.centralerrosapi.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import com.centralerrosapi.event.EventResourseCreated;
 import com.centralerrosapi.model.Log;
 import com.centralerrosapi.repository.LogRepository;
 import com.centralerrosapi.repository.filter.LogFilter;
+import com.centralerrosapi.repository.projection.LogResume;
 
 @RestController
 @RequestMapping("/logs")
@@ -33,8 +35,13 @@ public class LogController {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<Log> pesquisar(LogFilter logFilter){
-		return logRepository.filtrar(logFilter);
+	public Page<Log> pesquisar(LogFilter logFilter, Pageable pageable){
+		return logRepository.filtrar(logFilter, pageable);
+	}
+	
+	@GetMapping(params = "resume")
+	public Page<LogResume> resumir(LogFilter logFilter, Pageable pageable){
+		return logRepository.resume(logFilter, pageable);
 	}
 	
 	@GetMapping("/{id}")

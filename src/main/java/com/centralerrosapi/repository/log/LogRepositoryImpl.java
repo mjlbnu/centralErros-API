@@ -11,11 +11,16 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import com.centralerrosapi.model.Log;
 import com.centralerrosapi.model.Log_;
+import com.centralerrosapi.model.System_;
 import com.centralerrosapi.repository.filter.LogFilter;
+import com.centralerrosapi.repository.projection.LogResume;
 
 public class LogRepositoryImpl implements LogRepositoryQuery{
 	
@@ -23,7 +28,7 @@ public class LogRepositoryImpl implements LogRepositoryQuery{
 	private EntityManager manager;
 
 	@Override
-	public List<Log> filtrar(LogFilter logFilter) {
+	public Page<Log> filtrar(LogFilter logFilter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Log> criteria = builder.createQuery(Log.class);
 		Root<Log> root = criteria.from(Log.class);
@@ -34,7 +39,34 @@ public class LogRepositoryImpl implements LogRepositoryQuery{
 		
 		
 		TypedQuery<Log> query = manager.createQuery(criteria);
-		return query.getResultList();
+		addPaginationRestriction(query, pageable);
+		
+		return new PageImpl<>(query.getResultList(), pageable, total(logFilter));
+	}
+
+	@Override
+	public Page<LogResume> resume(LogFilter logFilter, Pageable pageable) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<LogResume> criteria = builder.createQuery(LogResume.class);
+		Root<Log> root = criteria.from(Log.class);
+		
+		criteria.select(
+				builder.construct(LogResume.class
+						, root.get(Log_.id)
+						, root.get(Log_.title)
+						, root.get(Log_.createdAt)
+						, root.get(Log_.category)
+						, root.get(Log_.level)
+						, root.get(Log_.system).get(System_.name)));
+
+		// Restrictions
+		Predicate[] predicates = createRestrictions(logFilter, builder, root);
+		criteria.where(predicates);
+
+		TypedQuery<LogResume> query = manager.createQuery(criteria);
+		addPaginationRestriction(query, pageable);
+
+		return new PageImpl<>(query.getResultList(), pageable, total(logFilter));
 	}
 
 	private Predicate[] createRestrictions(LogFilter logFilter, CriteriaBuilder builder, Root<Log> root) {
@@ -57,6 +89,28 @@ public class LogRepositoryImpl implements LogRepositoryQuery{
 		}
 		
 		return predicates.toArray(new Predicate[predicates.size()]);
+	}
+	
+	private void addPaginationRestriction(TypedQuery<?> query, Pageable pageable) {
+		int currentPage = pageable.getPageNumber();
+		int totalRecordsPerPage = pageable.getPageSize();
+		int firstPageRecord = currentPage * totalRecordsPerPage;
+		
+		query.setFirstResult(firstPageRecord);
+		query.setMaxResults(totalRecordsPerPage);
+	}
+	
+	private Long total(LogFilter logFilter) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<Log> root = criteria.from(Log.class);
+		
+		Predicate[] predicates = createRestrictions(logFilter, builder, root);
+		criteria.where(predicates);
+		
+		criteria.select(builder.count(root));
+		return manager.createQuery(criteria).getSingleResult();
+		
 	}
 
 }
