@@ -1,4 +1,6 @@
-# Central de Erros
+# Projeto de conclusao do aceleraDev Java Online Da CodeNation
+
+## API Central de Erros
 Objetivo
 Em projetos modernos é cada vez mais comum o uso de arquiteturas baseadas em serviços ou microsserviços. Nestes ambientes complexos, erros podem surgir em diferentes camadas da aplicação (backend, frontend, mobile, desktop) e mesmo em serviços distintos. Desta forma, é muito importante que os desenvolvedores possam centralizar todos os registros de erros em um local, de onde podem monitorar e tomar decisões mais acertadas. Neste projeto vamos implementar uma API Rest para centralizar registros de erros de aplicações.
 
@@ -22,3 +24,18 @@ Tecnologia
 * Deve suportar Ordenação por diferentes tipos de atributos
 * A consulta de listagem não deve retornar os LOGs dos Eventos
 * Deve permitir a busca de um evento por um ID, dessa maneira exibindo o LOG desse evento em específico
+
+## Tecnologias utilizadas durante o desenvolvimento
+* Java 8
+* Spring Boot
+* Spring Data Jpa
+* Spring Security
+* H2 database
+* MySQL
+* Postgres ElephantSQL
+* Flyway
+* Hibernate
+* JWT
+* Oauth2
+* Spring Fox
+* Swagger
