@@ -37,3 +37,10 @@ Tecnologia
 * Oauth2
 * Spring Fox
 * Swagger
+
+### Deploy no Heroku
+
+> Documentação da API: https://centralerros-api-marcio.herokuapp.com/swagger-ui.html
+ 
+
+
