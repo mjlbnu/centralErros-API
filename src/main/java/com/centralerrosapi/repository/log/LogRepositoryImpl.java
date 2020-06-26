@@ -17,8 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import com.centralerrosapi.model.Log;
-import com.centralerrosapi.model.Log_;
-import com.centralerrosapi.model.System_;
 import com.centralerrosapi.repository.filter.LogFilter;
 import com.centralerrosapi.repository.projection.LogResume;
 
@@ -52,12 +50,12 @@ public class LogRepositoryImpl implements LogRepositoryQuery{
 		
 		criteria.select(
 				builder.construct(LogResume.class
-						, root.get(Log_.id)
-						, root.get(Log_.title)
-						, root.get(Log_.createdAt)
-						, root.get(Log_.category)
-						, root.get(Log_.level)
-						, root.get(Log_.system).get(System_.name)));
+						, root.get("id")
+						, root.get("title")
+						, root.get("createdAt")
+						, root.get("category")
+						, root.get("level")
+						, root.get("system").get("name")));
 
 		// Restrictions
 		Predicate[] predicates = createRestrictions(logFilter, builder, root);
@@ -73,19 +71,19 @@ public class LogRepositoryImpl implements LogRepositoryQuery{
 		List<Predicate> predicates = new ArrayList<>();
 		
 		if(!StringUtils.isEmpty(logFilter.getTitle())) {
-			predicates.add(builder.like(builder.lower(root.get(Log_.title)), "%" + logFilter.getTitle().toLowerCase() + "%"));
+			predicates.add(builder.like(builder.lower(root.get("title")), "%" + logFilter.getTitle().toLowerCase() + "%"));
 		}
 		
 		if (!StringUtils.isEmpty(logFilter.getDetail())) {
-			predicates.add(builder.like(builder.lower(root.get(Log_.detail)), "%" + logFilter.getDetail().toLowerCase() + "%"));
+			predicates.add(builder.like(builder.lower(root.get("detail")), "%" + logFilter.getDetail().toLowerCase() + "%"));
 		}
 		
 		if (logFilter.getCreatedAtDe() !=null) {
-			predicates.add(builder.greaterThanOrEqualTo(root.get(Log_.createdAt), logFilter.getCreatedAtDe()));
+			predicates.add(builder.greaterThanOrEqualTo(root.get("createdAt"), logFilter.getCreatedAtDe()));
 		}
 		
 		if (logFilter.getCreatedAtAte() !=null) {
-			predicates.add(builder.lessThanOrEqualTo(root.get(Log_.createdAt), logFilter.getCreatedAtAte()));
+			predicates.add(builder.lessThanOrEqualTo(root.get("createdAt"), logFilter.getCreatedAtAte()));
 		}
 		
 		return predicates.toArray(new Predicate[predicates.size()]);
